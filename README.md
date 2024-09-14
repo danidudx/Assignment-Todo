@@ -36,7 +36,7 @@ Formik is used for handling form submissions, and Yup is integrated for form val
 
 ## Instructions
 
-cd todo-application
-npm install
-npm run dev
+- cd todo-application
+- npm install
+- npm run dev
 
