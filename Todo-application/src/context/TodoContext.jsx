@@ -1,24 +1,28 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
+import { AuthContext } from './AuthContext';
 
 const TodoContext = createContext();
 
 const TodoProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
+  const { user } = useContext(AuthContext); // Get the current logged-in user
 
-  // Load todos from localStorage on initial render
+  // Load todos from localStorage based on user email when the component mounts
   useEffect(() => {
-    const savedTodos = localStorage.getItem('todos');
-    if (savedTodos) {
-      setTodos(JSON.parse(savedTodos));
+    if (user?.email) {
+      const savedTodos = localStorage.getItem(`todos_${user.email}`);
+      if (savedTodos) {
+        setTodos(JSON.parse(savedTodos));
+      }
     }
-  }, []);
+  }, [user]);
 
-  // Save todos to localStorage whenever they change
+  // Save todos to localStorage whenever the todos array changes
   useEffect(() => {
-    if (todos.length > 0) {
-      localStorage.setItem('todos', JSON.stringify(todos));
+    if (user?.email) {
+      localStorage.setItem(`todos_${user.email}`, JSON.stringify(todos));
     }
-  }, [todos]);
+  }, [todos, user]);
 
   const addTodo = (todo) => setTodos([...todos, todo]);
   const editTodo = (updatedTodo) =>

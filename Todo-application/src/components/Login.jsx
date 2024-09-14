@@ -17,12 +17,23 @@ const Login = () => {
   });
 
   const handleSubmit = (values) => {
-    login(values.email, values.password);
-    setSuccessMessage('Login successful! Redirecting to Todo list...');
-    setTimeout(() => {
-      navigate('/todos');
-    }, 2000);
+    // Get existing users from localStorage
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    
+    // Check if user exists and password matches
+    const user = existingUsers.find(user => user.email === values.email);
+    
+    if (user && user.password === values.password) {
+      login(values.email, values.password);
+      setSuccessMessage('Login successful! Redirecting to Todo list...');
+      setTimeout(() => {
+        navigate('/todos');
+      }, 2000);
+    } else {
+      alert('Invalid email or password');
+    }
   };
+  
 
   return (
     <div className="container mt-5">

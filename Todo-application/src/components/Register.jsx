@@ -18,12 +18,35 @@ const Register = () => {
   });
 
   const handleSubmit = (values) => {
+    // Get existing users from localStorage or initialize empty array
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    
+    // Check if email already exists
+    const userExists = existingUsers.find(user => user.email === values.email);
+    if (userExists) {
+      alert("User already exists. Please log in.");
+      return;
+    }
+  
+    // Add new user to localStorage
+    const newUser = {
+      email: values.email,
+      password: values.password,
+      name: values.name,
+    };
+  
+    existingUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(existingUsers));
+    
+    // Simulate login by saving the user in context
     login(values.email, values.password);
     setSuccessMessage('Signup successful! Redirecting to Todo list...');
+    
     setTimeout(() => {
       navigate('/todos');
     }, 2000);
   };
+  
 
   return (
     <div className="container mt-5">

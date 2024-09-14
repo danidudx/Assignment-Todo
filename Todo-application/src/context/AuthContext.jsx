@@ -6,11 +6,11 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const login = (email, password) => {
-    setUser({ email });
+    setUser({ email }); // Save user's email when logging in
   };
 
   const logout = () => {
-    setUser(null);
+    setUser(null); // Clear user when logging out
   };
 
   return (
