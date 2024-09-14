@@ -1,13 +1,13 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
-import { AuthContext } from './AuthContext';
+import React, { useState, useEffect, createContext, useContext } from "react";
+import { AuthContext } from "./AuthContext";
 
 const TodoContext = createContext();
 
 const TodoProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
-  const { user } = useContext(AuthContext); // Get the current logged-in user
+  const { user } = useContext(AuthContext);
 
-  // Load todos from localStorage based on user email when the component mounts
+  // Load todos from localStorage based on user email
   useEffect(() => {
     if (user?.email) {
       const savedTodos = localStorage.getItem(`todos_${user.email}`);
@@ -17,7 +17,7 @@ const TodoProvider = ({ children }) => {
     }
   }, [user]);
 
-  // Save todos to localStorage whenever the todos array changes
+  // Save todos whenever there is a change
   useEffect(() => {
     if (user?.email) {
       localStorage.setItem(`todos_${user.email}`, JSON.stringify(todos));
@@ -26,7 +26,9 @@ const TodoProvider = ({ children }) => {
 
   const addTodo = (todo) => setTodos([...todos, todo]);
   const editTodo = (updatedTodo) =>
-    setTodos(todos.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo)));
+    setTodos(
+      todos.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo))
+    );
   const deleteTodo = (id) => setTodos(todos.filter((todo) => todo.id !== id));
   const toggleCompletion = (id) => {
     setTodos(
@@ -37,7 +39,9 @@ const TodoProvider = ({ children }) => {
   };
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, editTodo, deleteTodo, toggleCompletion }}>
+    <TodoContext.Provider
+      value={{ todos, addTodo, editTodo, deleteTodo, toggleCompletion }}
+    >
       {children}
     </TodoContext.Provider>
   );

@@ -19,7 +19,7 @@ const Register = () => {
   });
 
   const handleSubmit = (values) => {
-    // Get existing users from localStorage or initialize empty array
+    // Get existing users from localStorage
     const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
 
     // Check if email already exists
